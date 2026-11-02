@@ -1,0 +1,97 @@
+HTTP Homework
+Question 1: Key Differences Between HTTP Versions & HTTP/3 Transport Layer
+
+    HTTP/0.9: The most basic version. It only supported text, used the GET method, had no headers or status codes, and closed the connection right after sending the response.
+
+    HTTP/1.0: Added headers, status codes, and supported different file types (like images). It also introduced methods like POST and HEAD, but each request needed a brand-new TCP connection.
+
+    HTTP/1.1: Introduced persistent connections so multiple requests could use the same TCP connection. It also added chunked transfer and better caching.
+
+    HTTP/2: Moved from text format to binary. It introduced multiplexing (sending multiple requests at the same time over one connection) and header compression.
+
+    HTTP/3: Replaced TCP with QUIC (which runs over UDP). This helps avoid connection delays, speeds up handshakes, and keeps connections alive even if your IP changes.
+
+Why UDP in HTTP/3?
+HTTP/3 uses UDP (via QUIC) mainly to fix head-of-line blocking in TCP. In TCP, if a single packet gets lost, everything stops and waits for that packet to resend. UDP allows QUIC to handle loss recovery on a per-stream basis, so one lost packet doesn't slow down the rest of your data.
+Question 2: Stateless vs. Stateful Web Communications
+A. Stateless vs. Stateful
+
+    Stateless: Every request from a user is completely independent. The server doesn't remember anything about past requests.
+
+    Stateful: The server keeps track of the client’s session history, meaning future requests depend on what happened in earlier ones.
+
+B. HTTP Category and State Management
+
+    HTTP Category: HTTP is stateless by default.
+
+    Solution: To maintain state (like staying logged in or keeping items in a shopping cart), web apps use cookies, sessions, or tokens (like JWT) sent in the request headers.
+
+Question 3: Client-Server Limitations in HTTP and Real-Time Solutions
+A. The Challenge
+
+Because HTTP uses a standard client-server model, the client has to start every request. The server can never send data on its own without being asked first. This makes building real-time features like chat apps, webhooks, or live alerts really difficult because the server can't push new events to the user instantly.
+B. Solutions
+
+    Polling: The client constantly asks the server for updates every few seconds. It works, but it wastes a lot of network traffic when there’s no new data.
+
+    Long Polling: The client sends a request, and the server holds onto it until new data is ready. Once sent, the client immediately sends another request.
+
+    WebSockets: Creates a two-way, persistent connection between the client and server so both sides can send messages instantly at any time.
+
+    Server-Sent Events (SSE): The client opens one HTTP connection, and the server keeps streaming text updates to the client whenever new data comes in.
+
+Question 4: URL Components
+
+URL: ss://asghar:1234!!@ss.myproxy.com:1234#shadowSocks1
+
+    Scheme / Protocol: ss
+
+    Username: asghar
+
+    Password: 1234!!
+
+    Host / Domain: ss.myproxy.com
+
+    Port: 1234
+
+    Fragment / Anchor: shadowSocks1
+
+Question 5: REST API HTTP Status Codes
+
+    Website database is down and login requests fail:
+
+        503 Service Unavailable (or 500 Internal Server Error). 503 is best here because it shows the database/server is temporarily down.
+
+    Username entered doesn't exist on the site:
+
+        404 Not Found (if treating the user as a missing resource) or 401 Unauthorized (standard practice for security so hackers can't guess valid usernames).
+
+    Website moved to another domain:
+
+        301 Moved Permanently.
+
+    User sent too many requests (exceeded rate limit):
+
+        429 Too Many Requests.
+
+    Token (JWT) renewal was successful and token returned in header:
+
+        200 OK.
+
+    User is accessing from a banned IP range / sanctioned country:
+
+        403 Forbidden.
+
+Question 6: Proxy Types
+
+    Using university local servers instead of main servers for apt package downloads:
+
+        Caching Proxy (or Local Mirror Proxy) – It stores package files locally so students can download them faster without hitting external servers.
+
+    Routing user requests based on their geographic location:
+
+        Reverse Proxy / Load Balancer – It sits in front of the servers and routes users to the server nearest to them.
+
+    Adding authentication to an old legacy service:
+
+        Forward Proxy / Gateway Proxy – It acts as a middleman in front of the legacy app to handle login/auth before letting traffic pass through.
