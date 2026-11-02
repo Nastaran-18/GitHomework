@@ -1,0 +1,25 @@
+Part 1: How to Run a Service Exclusively on a Internal Network?
+
+To restrict a service so that it only runs on an internal network and is completely isolated from the public internet, you can use the following
+methods:
+   
+Binding to Local/Private IP Addresses: Configure the service (like Node.js, Python, or Go apps, or Nginx) to listen strictly on 
+a private IP address (such as 127.0.0.1 or 192.168.x.x) instead of binding to 0.0.0.0 (all interfaces). 
+This ensures external network interfaces cannot reach it directly.
+
+Firewall Rules (iptables / UFW): Set up operating system or cloud firewall rules to block any incoming traffic to the service's 
+port from external IP addresses, only allowing traffic originating from the local subnet or trusted internal gateway.
+
+Docker Network Isolation: Run the legacy service inside a Docker container attached only to a private Docker bridge network (
+without exposing or publishing its ports to the host machine using the -p flag), meaning only containers on the same internal network bridge 
+can talk to it.
+
+Part 2: What is TLS Termination?
+
+TLS Termination (or SSL termination) is the process of decrypting incoming HTTPS traffic at the edge (usually at a reverse proxy, 
+load balancer, or proxy server) before passing it along to the backend/legacy service.
+
+    The Philosophy & Purpose: Legacy or internal services are often built to handle plain, unencrypted HTTP traffic internally to save 
+CPU resources and simplify configuration. However, exposing plain HTTP over the public internet is a major security risk. TLS termination allows 
+the proxy to handle all the heavy cryptographic lifting (managing certificates, handling HTTPS handshakes, encryption/decryption) and send clean, 
+unencrypted HTTP requests to the legacy service over a trusted, isolated internal network.
